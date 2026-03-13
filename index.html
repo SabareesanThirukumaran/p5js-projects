@@ -6,24 +6,24 @@
     <title>S. Thirukumaran | Math Art</title>
     <style>
         :root { 
-            --bg: #f4f4f5; 
-            --text: #18181b; 
+            --bg: #f8fafc; 
+            --text: #0f172a; 
             --card-bg: #ffffff;
-            --accent: #ff4500; /* Vibrant Orange-Red */
-            --meta: #71717a;
+            --accent: #ff4500; 
+            --border: #e2e8f0;
         }
 
         body { 
             background-color: var(--bg); 
             color: var(--text); 
-            font-family: system-ui, -apple-system, sans-serif; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
             margin: 0; 
-            padding: 80px 40px;
+            padding: 60px 20px;
             line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* The New Vector Field Canvas */
+        /* Interactive Background */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -35,37 +35,36 @@
         }
 
         header { 
-            max-width: 1200px; 
-            margin: 0 auto 80px auto; 
-            border-bottom: 2px solid #e4e4e7;
-            padding-bottom: 30px;
+            max-width: 1100px; 
+            margin: 0 auto 60px auto; 
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 40px;
         }
 
         h1 { 
-            font-size: 14px; 
-            font-weight: 700; 
+            font-size: 13px; 
+            font-weight: 800; 
             text-transform: uppercase; 
-            letter-spacing: 2px; 
+            letter-spacing: 3px; 
             color: var(--accent);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .bio { 
-            font-size: clamp(28px, 4vw, 48px); 
-            max-width: 900px; 
+            font-size: clamp(26px, 5vw, 44px); 
+            max-width: 850px; 
             font-weight: 800;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
             color: var(--text);
             line-height: 1.1;
         }
 
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
-            gap: 40px; 
-            max-width: 1200px; 
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+            gap: 30px; 
+            max-width: 1100px; 
             margin: 0 auto; 
-            perspective: 1000px; /* Required for the 3D tilt effect */
         }
 
         .card { 
@@ -73,55 +72,56 @@
             color: inherit;
             display: block;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease;
-            transform-style: preserve-3d; /* For the tilt effect */
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
         .card:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border-color: var(--accent);
         }
 
         .preview {
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #e4e4e7;
+            background: #000; /* Black background for code loaders */
             margin-bottom: 20px;
-            border-radius: 8px;
-            transform: translateZ(30px); /* Pops the image out during tilt */
+            border-radius: 12px;
+            overflow: hidden;
+            transform: translateZ(30px); 
+            position: relative;
+        }
+
+        /* Iframe styling to make it feel like an image */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none; /* Prevents iframe from intercepting mouse tilt */
+            display: block;
         }
 
         .card h2 { 
-            font-size: 22px; 
-            margin: 0 0 8px 0; 
+            font-size: 20px; 
+            margin: 0 0 6px 0; 
             font-weight: 700; 
             transform: translateZ(20px);
         }
         
         .card p { 
-            font-size: 16px; 
-            color: var(--meta); 
+            font-size: 15px; 
+            color: #64748b; 
             margin: 0; 
-            transform: translateZ(10px);
-        }
-        
-        .card .meta { 
-            font-size: 12px; 
-            text-transform: uppercase; 
-            color: var(--text); 
-            margin-top: 20px; 
-            display: inline-block; 
-            font-weight: 600;
-            padding: 4px 8px;
-            background: #f4f4f5;
-            border-radius: 4px;
-            transform: translateZ(10px);
+            transform: translateZ(15px);
         }
 
         @media (max-width: 600px) {
-            body { padding: 40px 20px; }
+            body { padding: 40px 15px; }
             .grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -137,33 +137,38 @@
 
     <div class="grid">
         <a href="TorusSim/" class="card tilt-card">
-            <div class="preview"></div>
+            <div class="preview">
+                <iframe data-src="TorusSim/" scrolling="no"></iframe>
+            </div>
             <h2>Torus Simulation</h2>
             <p>A study on 3D vertex projection and trigonometric oscillation.</p>
-            <span class="meta">GL-01</span>
         </a>
 
         <a href="StarWarsIntro/" class="card tilt-card">
-            <div class="preview"></div>
+            <div class="preview">
+                <iframe data-src="StarWarsIntro/" scrolling="no"></iframe>
+            </div>
             <h2>Star Wars Intro</h2>
             <p>Linear velocity distribution within a 3D particle field.</p>
-            <span class="meta">GL-02</span>
         </a>
 
         <a href="PerlinNoiseSim/" class="card tilt-card">
-            <div class="preview"></div>
+            <div class="preview">
+                <iframe data-src="PerlinNoiseSim/" scrolling="no"></iframe>
+            </div>
             <h2>Perlin Noise Simulator</h2>
-            <p>Organic vector field generation utilising pseudo-random noise algorithms.</p>
-            <span class="meta">GL-03</span>
+            <p>Organic vector field generation utilising pseudo-random algorithms.</p>
         </a>
     </div>
 
     <script>
-        // --- 1. Interactive Vector Field Background ---
+        /** * 1. BACKGROUND INTERACTION 
+         * Every line on the screen follows the mouse.
+         */
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        const spacing = 40; // Distance between lines
+        const spacing = 45; 
         let mouse = { x: -1000, y: -1000 };
 
         function resize() {
@@ -172,38 +177,28 @@
         }
 
         window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
         resize();
 
         function drawField() {
             ctx.clearRect(0, 0, width, height);
-            ctx.strokeStyle = '#d4d4d8'; // Light gray lines
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#cbd5e1'; 
+            ctx.lineWidth = 1.5;
 
             for (let x = spacing / 2; x < width; x += spacing) {
                 for (let y = spacing / 2; y < height; y += spacing) {
-                    // Calculate angle to mouse
                     const dx = mouse.x - x;
                     const dy = mouse.y - y;
                     const angle = Math.atan2(dy, dx);
-                    
-                    // Calculate distance to mouse for a subtle length effect
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    const length = Math.max(5, 15 - (dist / 50)); 
+                    const length = Math.max(4, 12 - (dist / 60)); 
 
                     ctx.save();
                     ctx.translate(x, y);
                     ctx.rotate(angle);
                     ctx.beginPath();
-                    ctx.moveTo(-length / 2, 0);
-                    ctx.lineTo(length / 2, 0);
-                    
-                    // Add a dot at the end to make it look like an arrow/pointer
-                    ctx.arc(length / 2, 0, 1.5, 0, Math.PI * 2);
-                    
+                    ctx.moveTo(-length, 0);
+                    ctx.lineTo(length, 0);
                     ctx.stroke();
                     ctx.restore();
                 }
@@ -212,33 +207,46 @@
         }
         drawField();
 
-        // --- 2. 3D Card Tilt Effect ---
+        /** * 2. 3D CARD TILT 
+         * Makes cards follow the mouse position.
+         */
         const cards = document.querySelectorAll('.tilt-card');
-        
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; // x position within the element.
-                const y = e.clientY - rect.top;  // y position within the element.
-                
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;  
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
-                const rotateY = ((x - centerX) / centerX) * 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                const rotateX = ((y - centerY) / centerY) * -8; 
+                const rotateY = ((x - centerX) / centerX) * 8;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
             });
-            
             card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                 card.style.transition = 'transform 0.5s ease';
             });
-            
-            card.addEventListener('mouseenter', () => {
-                card.style.transition = 'none'; // Remove transition for snappy mouse tracking
-            });
+            card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
         });
+
+        /** * 3. SMART PERFORMANCE LOADER
+         * Only loads the math simulation when it's on screen.
+         */
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const iframe = entry.target.querySelector('iframe');
+                if (entry.isIntersecting) {
+                    // Load the iframe only when seen
+                    if (!iframe.src) iframe.src = iframe.getAttribute('data-src');
+                } else {
+                    // Unload to save CPU
+                    iframe.src = ''; 
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => observer.observe(card));
     </script>
 </body>
 </html>
