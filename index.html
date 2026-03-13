@@ -13,6 +13,8 @@
             --border: #e2e8f0;
         }
 
+        * { cursor: none !important; }
+
         body { 
             background-color: var(--bg); 
             color: var(--text); 
@@ -23,7 +25,28 @@
             overflow-x: hidden;
         }
 
-        /* Interactive Background */
+        #cursor {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+        }
+
+        #cursor-follower {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease-out;
+        }
+
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -76,7 +99,7 @@
             border-radius: 20px;
             border: 1px solid var(--border);
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
             perspective: 1000px;
             transform-style: preserve-3d;
         }
@@ -84,43 +107,38 @@
         .card:hover {
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
             border-color: var(--accent);
+            transform: translateY(-5px);
         }
 
         .preview {
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #000; /* Black background for code loaders */
+            background: #e2e8f0; 
             margin-bottom: 20px;
             border-radius: 12px;
             overflow: hidden;
             transform: translateZ(30px); 
             position: relative;
+            background-size: cover;
+            background-position: center;
         }
 
-        /* Iframe styling to make it feel like an image */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            pointer-events: none; /* Prevents iframe from intercepting mouse tilt */
-            display: block;
+        .preview-torus { 
+            background-image: url('torus.jpg'); 
+        }
+        .preview-stars { 
+            background-image: url('stars.jpg'); 
+        }
+        .preview-perlin { 
+            background-image: url('perlin.jpg'); 
         }
 
-        .card h2 { 
-            font-size: 20px; 
-            margin: 0 0 6px 0; 
-            font-weight: 700; 
-            transform: translateZ(20px);
-        }
-        
-        .card p { 
-            font-size: 15px; 
-            color: #64748b; 
-            margin: 0; 
-            transform: translateZ(15px);
-        }
+        .card h2 { font-size: 20px; margin: 0 0 6px 0; font-weight: 700; transform: translateZ(20px); }
+        .card p { font-size: 15px; color: #64748b; margin: 0; transform: translateZ(15px); }
 
         @media (max-width: 600px) {
+            * { cursor: auto !important; }
+            #cursor, #cursor-follower { display: none; }
             body { padding: 40px 15px; }
             .grid { grid-template-columns: 1fr; }
         }
@@ -128,6 +146,8 @@
 </head>
 <body>
 
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
     <canvas id="bg-canvas"></canvas>
 
     <header>
@@ -137,38 +157,37 @@
 
     <div class="grid">
         <a href="TorusSim/" class="card tilt-card">
-            <div class="preview">
-                <iframe data-src="TorusSim/" scrolling="no"></iframe>
-            </div>
+            <div class="preview preview-torus"></div>
             <h2>Torus Simulation</h2>
             <p>A study on 3D vertex projection and trigonometric oscillation.</p>
         </a>
 
         <a href="StarWarsIntro/" class="card tilt-card">
-            <div class="preview">
-                <iframe data-src="StarWarsIntro/" scrolling="no"></iframe>
-            </div>
+            <div class="preview preview-stars"></div>
             <h2>Star Wars Intro</h2>
             <p>Linear velocity distribution within a 3D particle field.</p>
         </a>
 
         <a href="PerlinNoiseSim/" class="card tilt-card">
-            <div class="preview">
-                <iframe data-src="PerlinNoiseSim/" scrolling="no"></iframe>
-            </div>
+            <div class="preview preview-perlin"></div>
             <h2>Perlin Noise Simulator</h2>
             <p>Organic vector field generation utilising pseudo-random algorithms.</p>
         </a>
     </div>
 
     <script>
-        /** * 1. BACKGROUND INTERACTION 
-         * Every line on the screen follows the mouse.
-         */
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            follower.style.transform = `translate3d(${e.clientX - 10}px, ${e.clientY - 10}px, 0)`;
+        });
+
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        const spacing = 45; 
+        const spacing = 50; 
         let mouse = { x: -1000, y: -1000 };
 
         function resize() {
@@ -177,28 +196,28 @@
         }
 
         window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.clientX; 
+            mouse.y = e.clientY; 
+        });
         resize();
 
         function drawField() {
             ctx.clearRect(0, 0, width, height);
             ctx.strokeStyle = '#cbd5e1'; 
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 1;
 
             for (let x = spacing / 2; x < width; x += spacing) {
                 for (let y = spacing / 2; y < height; y += spacing) {
                     const dx = mouse.x - x;
                     const dy = mouse.y - y;
                     const angle = Math.atan2(dy, dx);
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    const length = Math.max(4, 12 - (dist / 60)); 
-
                     ctx.save();
                     ctx.translate(x, y);
                     ctx.rotate(angle);
                     ctx.beginPath();
-                    ctx.moveTo(-length, 0);
-                    ctx.lineTo(length, 0);
+                    ctx.moveTo(-5, 0);
+                    ctx.lineTo(5, 0);
                     ctx.stroke();
                     ctx.restore();
                 }
@@ -207,9 +226,6 @@
         }
         drawField();
 
-        /** * 2. 3D CARD TILT 
-         * Makes cards follow the mouse position.
-         */
         const cards = document.querySelectorAll('.tilt-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -218,35 +234,20 @@
                 const y = e.clientY - rect.top;  
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -8; 
-                const rotateY = ((x - centerX) / centerX) * 8;
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                const rotateX = ((y - centerY) / centerY) * -10; 
+                const rotateY = ((x - centerX) / centerX) * 10;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                
+                follower.style.transform = `translate3d(${e.clientX - 25}px, ${e.clientY - 25}px, 0) scale(2)`;
+                follower.style.background = 'rgba(255, 69, 0, 0.1)';
             });
+
             card.addEventListener('mouseleave', () => {
-                card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                card.style.transition = 'transform 0.5s ease';
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                follower.style.transform = `scale(1)`;
+                follower.style.background = 'transparent';
             });
-            card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
         });
-
-        /** * 3. SMART PERFORMANCE LOADER
-         * Only loads the math simulation when it's on screen.
-         */
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const iframe = entry.target.querySelector('iframe');
-                if (entry.isIntersecting) {
-                    // Load the iframe only when seen
-                    if (!iframe.src) iframe.src = iframe.getAttribute('data-src');
-                } else {
-                    // Unload to save CPU
-                    iframe.src = ''; 
-                }
-            });
-        }, observerOptions);
-
-        cards.forEach(card => observer.observe(card));
     </script>
 </body>
 </html>
