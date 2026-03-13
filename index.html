@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabareesan | Quantum Geometry Lab</title>
+    <style>
+        :root { --accent: #00f2ff; --bg: #050505; }
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow-x: hidden;
+        }
+        h1 { color: var(--accent); letter-spacing: 5px; text-transform: uppercase; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 80%; max-width: 1000px; margin-top: 50px; }
+        .card { 
+            border: 1px solid #333; 
+            padding: 20px; 
+            text-align: center; 
+            transition: 0.3s; 
+            text-decoration: none; 
+            color: #888; 
+            background: rgba(255,255,255,0.02);
+        }
+        .card:hover { 
+            border-color: var(--accent); 
+            color: var(--accent); 
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        .card h2 { margin-top: 0; font-size: 1.2rem; }
+        .card p { font-size: 0.8rem; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <h1>Math Art Repository</h1>
+    <p>Sabareesan Thirukumaran // Specialized in Generative Geometry</p>
+
+    <div class="grid">
+        <a href="TorusSim/" class="card">
+            <h2>01 // TORUS SIMULATION</h2>
+            <p>3D projection of a mathematical torus. Explores vertex transformation and trigonometric rotation logic.</p>
+        </a>
+
+        <a href="NeuralFracture/" class="card">
+            <h2>02 // NEURAL FRACTURE</h2>
+            <p>High-standard 3D mesh deformation using Perlin Noise displacement and triangle-strip rendering.</p>
+        </a>
+
+        </div>
+
+</body>
+</html>
