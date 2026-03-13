@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sabareesan | Math Art</title>
+    <title>S. Thirukumaran | Math Art</title>
     <style>
         :root { 
-            --bg: #0a0a0a; 
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --text: #ffffff; 
-            --accent: #00ffcc;
-            --sub-text: #888;
+            --bg: #f4f4f5; 
+            --text: #18181b; 
+            --card-bg: #ffffff;
+            --accent: #ff4500; /* Vibrant Orange-Red */
+            --meta: #71717a;
         }
-
-        * { box-sizing: border-box; }
 
         body { 
             background-color: var(--bg); 
             color: var(--text); 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            font-family: system-ui, -apple-system, sans-serif; 
             margin: 0; 
             padding: 80px 40px;
-            line-height: 1.6;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
+        /* The New Vector Field Canvas */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -37,28 +36,27 @@
 
         header { 
             max-width: 1200px; 
-            margin: 0 auto 100px auto; 
-            position: relative;
+            margin: 0 auto 80px auto; 
+            border-bottom: 2px solid #e4e4e7;
+            padding-bottom: 30px;
         }
 
         h1 { 
-            font-size: 12px; 
+            font-size: 14px; 
             font-weight: 700; 
             text-transform: uppercase; 
-            letter-spacing: 4px; 
+            letter-spacing: 2px; 
             color: var(--accent);
-            margin-bottom: 24px;
+            margin-bottom: 15px;
         }
 
         .bio { 
-            font-size: clamp(24px, 5vw, 42px); 
-            max-width: 800px; 
-            font-weight: 300;
-            line-height: 1.2;
+            font-size: clamp(28px, 4vw, 48px); 
+            max-width: 900px; 
+            font-weight: 800;
             letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, #555);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text);
+            line-height: 1.1;
         }
 
         .grid { 
@@ -67,6 +65,7 @@
             gap: 40px; 
             max-width: 1200px; 
             margin: 0 auto; 
+            perspective: 1000px; /* Required for the 3D tilt effect */
         }
 
         .card { 
@@ -74,39 +73,51 @@
             color: inherit;
             display: block;
             background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
             padding: 20px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+            transform-style: preserve-3d; /* For the tilt effect */
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         }
 
         .preview {
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: #111;
-            margin-bottom: 25px;
-            overflow: hidden;
-            position: relative;
-            border-radius: 4px;
+            background: #e4e4e7;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transform: translateZ(30px); /* Pops the image out during tilt */
         }
 
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 255, 204, 0.05);
+        .card h2 { 
+            font-size: 22px; 
+            margin: 0 0 8px 0; 
+            font-weight: 700; 
+            transform: translateZ(20px);
         }
-
-        .card h2 { font-size: 20px; margin: 0 0 10px 0; font-weight: 600; }
-        .card p { font-size: 15px; color: var(--sub-text); margin: 0; }
+        
+        .card p { 
+            font-size: 16px; 
+            color: var(--meta); 
+            margin: 0; 
+            transform: translateZ(10px);
+        }
+        
         .card .meta { 
-            font-size: 10px; 
+            font-size: 12px; 
             text-transform: uppercase; 
-            color: var(--accent); 
+            color: var(--text); 
             margin-top: 20px; 
-            display: block; 
-            letter-spacing: 2px;
-            opacity: 0.7;
+            display: inline-block; 
+            font-weight: 600;
+            padding: 4px 8px;
+            background: #f4f4f5;
+            border-radius: 4px;
+            transform: translateZ(10px);
         }
 
         @media (max-width: 600px) {
@@ -120,93 +131,114 @@
     <canvas id="bg-canvas"></canvas>
 
     <header>
-        <h1>S. Thirukumaran — Portfolio 2026</h1>
-        <div class="bio">Computational designer building intersections between <b>mathematics</b> and <b>visual geometry</b>.</div>
+        <h1>S. Thirukumaran</h1>
+        <div class="bio">Computational designer focusing on the intersection of mathematics and visual geometry.</div>
     </header>
 
     <div class="grid">
-        <a href="TorusSim/" class="card">
+        <a href="TorusSim/" class="card tilt-card">
             <div class="preview"></div>
             <h2>Torus Simulation</h2>
             <p>A study on 3D vertex projection and trigonometric oscillation.</p>
-            <span class="meta">GL-01 / Coordinate Geometry</span>
+            <span class="meta">GL-01</span>
         </a>
 
-        <a href="StarWarsIntro/" class="card">
+        <a href="StarWarsIntro/" class="card tilt-card">
             <div class="preview"></div>
             <h2>Star Wars Intro</h2>
             <p>Linear velocity distribution within a 3D particle field.</p>
-            <span class="meta">GL-02 / Motion Design</span>
+            <span class="meta">GL-02</span>
         </a>
 
-        <a href="PerlinNoiseSim/" class="card">
+        <a href="PerlinNoiseSim/" class="card tilt-card">
             <div class="preview"></div>
             <h2>Perlin Noise Simulator</h2>
             <p>Organic vector field generation utilising pseudo-random noise algorithms.</p>
-            <span class="meta">GL-03 / Algorithmic Art</span>
+            <span class="meta">GL-03</span>
         </a>
     </div>
 
     <script>
+        // --- 1. Interactive Vector Field Background ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        let points = [];
-        const mouse = { x: null, y: null, radius: 150 };
+        let width, height;
+        const spacing = 40; // Distance between lines
+        let mouse = { x: -1000, y: -1000 };
 
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            points = [];
-            for (let i = 0; i < 80; i++) {
-                points.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    baseX: Math.random() * canvas.width,
-                    baseY: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 1,
-                    speed: Math.random() * 0.5 + 0.2
-                });
-            }
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
 
+        window.addEventListener('resize', resize);
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
         });
+        resize();
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            for (let i = 0; i < points.length; i++) {
-                let p = points[i];
-                
-                p.y -= p.speed;
-                if (p.y < 0) p.y = canvas.height;
+        function drawField() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = '#d4d4d8'; // Light gray lines
+            ctx.lineWidth = 2;
 
-                let dx = mouse.x - p.x;
-                let dy = mouse.y - p.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
+            for (let x = spacing / 2; x < width; x += spacing) {
+                for (let y = spacing / 2; y < height; y += spacing) {
+                    // Calculate angle to mouse
+                    const dx = mouse.x - x;
+                    const dy = mouse.y - y;
+                    const angle = Math.atan2(dy, dx);
+                    
+                    // Calculate distance to mouse for a subtle length effect
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const length = Math.max(5, 15 - (dist / 50)); 
 
-                if (distance < mouse.radius) {
-                    ctx.strokeStyle = `rgba(0, 255, 204, ${1 - distance/mouse.radius})`;
-                    ctx.lineWidth = 0.5;
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(angle);
                     ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.moveTo(-length / 2, 0);
+                    ctx.lineTo(length / 2, 0);
+                    
+                    // Add a dot at the end to make it look like an arrow/pointer
+                    ctx.arc(length / 2, 0, 1.5, 0, Math.PI * 2);
+                    
                     ctx.stroke();
+                    ctx.restore();
                 }
-
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
             }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(drawField);
         }
+        drawField();
 
-        window.addEventListener('resize', init);
-        init();
-        animate();
+        // --- 2. 3D Card Tilt Effect ---
+        const cards = document.querySelectorAll('.tilt-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element.
+                const y = e.clientY - rect.top;  // y position within the element.
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                card.style.transition = 'transform 0.5s ease';
+            });
+            
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none'; // Remove transition for snappy mouse tracking
+            });
+        });
     </script>
 </body>
 </html>
